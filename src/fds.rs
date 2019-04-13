@@ -21,9 +21,8 @@ pub enum KindOfFile {
 pub struct FileData {
     pub boot_read_file_code: u8,
     pub disk_number: u8, 
-    pub emu_disk_number: u8,
+    pub actual_disk_number: u8,
     pub side_number: u8, 
-    pub emu_side_number: u8,
     pub file_number: u8,
     pub file_id: u8,
     pub file_name: [u8; 8],
@@ -38,9 +37,8 @@ impl FileData {
         FileData {
             boot_read_file_code: 0,
             disk_number: 0,
-            emu_disk_number: 0,
+            actual_disk_number: 0,
             side_number: 0,
-            emu_side_number: 0,
             file_number: 0,
             file_id: 0,
             file_name: [0; 8],
@@ -85,23 +83,21 @@ impl Fds {
             return Err(RomError::InvalidRom);
         }
 
-        let mut disk_num = -1;
-        let mut side_num;
+        let mut actual_disk_num = -1;
         for i in 0..fds.sides_amount {
             file.seek(io::SeekFrom::Start(HEADER_SIZE + (i as u64 * DISK_SIZE)))?;
 
-            side_num = i % 2;
             if i%2 == 0 {
-                disk_num += 1;
+                actual_disk_num += 1;
             }
 
-            Fds::read_disk_side(&mut file, &mut fds.disk_files, side_num, disk_num as u8)?;
+            Fds::read_disk_side(&mut file, &mut fds.disk_files, actual_disk_num as u8)?;
         }
         
         Ok(fds)
      }
 
-     fn read_disk_side<R: Read>(file: &mut R, fv: &mut Vec<FileData>, eside_num: u8, edisk_num: u8) -> Result<(), RomError> {
+     fn read_disk_side<R: Read>(file: &mut R, fv: &mut Vec<FileData>, actual_disk_num: u8) -> Result<(), RomError> {
          // block 1
         let mut buf1: [u8; BLOCK_1_SIZE as usize] = [0; BLOCK_1_SIZE as usize];
         file.read_exact(&mut buf1)?;
@@ -130,8 +126,7 @@ impl Fds {
                 Some(mut fd) => {
                     fd.disk_number = disk_num;
                     fd.side_number = side_num;
-                    fd.emu_disk_number = edisk_num;
-                    fd.emu_side_number = eside_num;
+                    fd.actual_disk_number = actual_disk_num;
                     fd.boot_read_file_code = boot_read_file_code;
                     fv.push(fd)
                 },
