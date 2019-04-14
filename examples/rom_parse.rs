@@ -4,9 +4,7 @@ use std::fs::File;
 use nes_rom::*;
 
 fn main() {
-    // The roms are parsed with very little manipulation to not make assumptions about client code use.
-    // Error checking is done to make sure data is correct size and header flag conflicts (e.g Ines/ Nes2.0)
-
+  
     let ines_file = File::open("example_roms\\Super Mario Bros. + Duck Hunt (USA).nes").unwrap();
     let ines = ines::Ines::from_rom(ines_file);
 
