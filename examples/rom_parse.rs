@@ -45,6 +45,27 @@ fn main() {
         Err(ref e) => println!("{:?}", e),
     }
 
+    assert_eq!(unif.is_ok(), true);
+    let ines_c  = unif.unwrap().into_ines();
+
+    match ines_c {
+         Ok(ref ines_c) => {
+            println!(" unif to ines coversion =============================================");
+            println!("\theader ver. {:?}", ines_c.header_version);
+            println!("\tmapper: {:?} submapper: {:?}", ines_c.mapper, ines_c.submapper);
+            println!("\tmirroring: {:?}", ines_c.nametable_mirroring);
+            println!("\tprg rom size: {:?} chr rom size: {:?}", ines_c.prg_rom_size, ines_c.chr_rom_size);
+            println!("\tprg rom crc: {:X} chr rom crc: {:X}", ines_c.prg_crc, ines_c.chr_crc);
+            // Nes 2.0 allows more detailed handling of ram types
+            match ines_c.ram {
+                ines::Ram::Ines(prg_ram) => println!("\tprg ram: {:?}", prg_ram),
+                ines::Ram::Nes2{prg_ram, prg_nvram, chr_ram, chr_nvram} =>
+                    println!("\tprg ram: {:?} chr ram: {:?} prg nvram: {:?} chr nvram: {:?}", prg_ram, chr_ram, prg_nvram, chr_nvram),
+            }
+        }
+        Err(ref e) => println!("{:?}", e),
+    }
+
     let fds_file = File::open("example_roms\\Time Twist - Rekishi no Katasumi de (1991)(Nintendo).fds").unwrap();
     let fds = fds::Fds::from_rom(fds_file);
 
