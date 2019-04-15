@@ -3,6 +3,8 @@ name = "nes_rom"
 version = "0.1.0"
 authors = ["w1n5t0n99 <reedelam@gmail.com>"]
 edition = "2018"
+license = "MIT"
+description = "NES rom parser. Parses most common file formats."
 
 [dependencies]
 num-traits = "0.2"
