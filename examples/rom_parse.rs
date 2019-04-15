@@ -1,7 +1,7 @@
 extern crate nes_rom;
 
 use std::fs::File;
-use nes_rom::*;
+use nes_rom::{ines, unif, fds};
 
 fn main() {
   
