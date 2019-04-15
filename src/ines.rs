@@ -195,6 +195,13 @@ impl Ines {
         }
     }
 
+    /// Load and parse .ines file
+    /// 
+    /// # Examples
+    /// 
+    ///  ```
+    /// let ines = nes_rom::ines::Ines::from_rom(arg);
+    ///  ```
     pub fn from_rom<R: Read + Seek>(mut file: R) -> Result<Ines, RomError> {
         let mut buf: [u8; 16] = [0; 16];
         file.read_exact(&mut buf)?;

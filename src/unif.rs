@@ -321,7 +321,13 @@ impl Unif {
             chr_data: Vec::new(),
         }
     }
-
+    /// Load and parse .unif/.unf file
+    /// 
+    /// # Examples
+    /// 
+    ///  ```
+    /// let unif = nes_rom::unif::Unif::from_rom(arg);
+    ///  ```
     pub fn from_rom<R: Read + Seek>(mut file: R) -> Result<Unif, RomError> {
         let mut buf: [u8; 32] = [0; 32];
         file.read_exact(&mut buf)?;
@@ -360,7 +366,13 @@ impl Unif {
         Ok(unif)
     }
 
-    // tranfers ownership, maybe useful since rom files can be very large
+    /// Convert unif to ines format, transfers ownership
+    /// 
+    /// # Examples
+    /// 
+    ///  ```
+    /// let ines = unif.into_ines();
+    ///  ```
     pub fn into_ines(self) ->Result<ines::Ines, RomError> {
         let mut i = ines::Ines::new();
         i.header_version = ines::HeaderVersion::Nes2;
@@ -418,8 +430,14 @@ impl Unif {
         return Ok(i);
     }
 
-    // creates clone, leaves original format intact
-     pub fn to_ines(&self) ->Result<ines::Ines, RomError> {
+    /// Convert unif to ines format, clone rom data
+    /// 
+    /// # Examples
+    /// 
+    ///  ```
+    /// let ines = unif.to_ines();
+    ///  ```
+    pub fn to_ines(&self) ->Result<ines::Ines, RomError> {
         let mut i = ines::Ines::new();
         i.header_version = ines::HeaderVersion::Nes2;
 

@@ -64,7 +64,14 @@ impl Fds {
         }
     }
 
-     pub fn from_rom<R: Read + Seek>(mut file: R) -> Result<Fds, RomError> {
+    /// Load and parse .fds file
+    /// 
+    /// # Examples
+    /// 
+    ///  ```
+    /// let fds = nes_rom::fds::Fds::from_rom(arg);
+    ///  ``` 
+    pub fn from_rom<R: Read + Seek>(mut file: R) -> Result<Fds, RomError> {
         let mut buf: [u8; 16] = [0; 16];
         file.read_exact(&mut buf)?;
         // check header

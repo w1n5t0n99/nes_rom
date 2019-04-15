@@ -1,3 +1,7 @@
+//! # nes_rom
+//! 
+//! parses the most common NES rom file formats 
+
 
 #[macro_use]
 extern crate num_derive;
